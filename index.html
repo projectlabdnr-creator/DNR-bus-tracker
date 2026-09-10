@@ -19,7 +19,7 @@
 :root {
     --bg-main: #030712;
     --card-bg: rgba(15, 23, 42, 0.85);
-    --card-border: rgba(255, 255, 255, 0.15);
+    --card-border: rgba(255, 255, 255, 0.12);
     --accent-blue: #3b82f6;
     --accent-glow: rgba(59, 130, 246, 0.4);
     --accent-green: #10b981;
@@ -35,10 +35,6 @@ body {
     margin: 0;
     font-family: 'Plus Jakarta Sans', sans-serif;
     background-color: var(--bg-main);
-    background-image: linear-gradient(to bottom, rgba(3, 7, 18, 0.88), rgba(3, 7, 18, 0.95)), url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1920');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
     color: var(--text-primary);
     min-height: 100vh;
 }
@@ -58,15 +54,13 @@ body {
 /* ================= PORTAL SELECTION SCREEN ================= */
 #roleSelectionScreen {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: linear-gradient(rgba(3, 7, 18, 0.85), rgba(3, 7, 18, 0.92)), url('https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&q=80&w=1920');
-    background-size: cover;
-    background-position: center;
+    background: #030712;
     display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 20px;
     overflow-y: auto;
 }
 
 .role-box {
-    background: rgba(15, 23, 42, 0.85);
+    background: rgba(15, 23, 42, 0.8);
     border: 1px solid var(--card-border);
     backdrop-filter: blur(20px);
     padding: 40px 32px; border-radius: 28px; text-align: center; max-width: 900px; width: 100%;
@@ -80,7 +74,7 @@ body {
 }
 .role-box p { color: var(--text-secondary); margin-bottom: 32px; font-size: 14px; }
 
-/* Portal Cards with Background Images */
+/* Portal Cards without Background Images */
 .portal-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -100,21 +94,8 @@ body {
     justify-content: space-between;
     padding: 24px;
     text-align: left;
-    background-size: cover;
-    background-position: center;
-}
-
-/* Background image overlays for portal cards */
-.portal-card.student {
-    background-image: linear-gradient(to top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.5)), url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800');
-}
-
-.portal-card.driver {
-    background-image: linear-gradient(to top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.5)), url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=800');
-}
-
-.portal-card.management {
-    background-image: linear-gradient(to top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.5)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800');
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(10px);
 }
 
 .portal-icon {
@@ -123,12 +104,11 @@ body {
     display: flex; align-items: center; justify-content: center;
     font-size: 22px;
     margin-bottom: 16px;
-    backdrop-filter: blur(10px);
 }
 
-.portal-card.student .portal-icon { background: rgba(59, 130, 246, 0.25); color: #fff; border: 1px solid rgba(59, 130, 246, 0.4); }
-.portal-card.driver .portal-icon { background: rgba(16, 185, 129, 0.25); color: #fff; border: 1px solid rgba(16, 185, 129, 0.4); }
-.portal-card.management .portal-icon { background: rgba(139, 92, 246, 0.25); color: #fff; border: 1px solid rgba(139, 92, 246, 0.4); }
+.portal-card.student .portal-icon { background: rgba(59, 130, 246, 0.15); color: #fff; border: 1px solid rgba(59, 130, 246, 0.3); }
+.portal-card.driver .portal-icon { background: rgba(16, 185, 129, 0.15); color: #fff; border: 1px solid rgba(16, 185, 129, 0.3); }
+.portal-card.management .portal-icon { background: rgba(139, 92, 246, 0.15); color: #fff; border: 1px solid rgba(139, 92, 246, 0.3); }
 
 .portal-card h3 {
     margin: 0 0 8px 0; font-size: 20px; font-weight: 700; color: #fff;
@@ -136,18 +116,18 @@ body {
 }
 
 .portal-card p {
-    margin: 0; font-size: 13px; color: #cbd5e1; line-height: 1.5;
+    margin: 0; font-size: 13px; color: var(--text-secondary); line-height: 1.5;
 }
 
 .portal-card:hover {
     transform: translateY(-6px);
-    border-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
-.portal-card.student:hover { border-color: var(--accent-blue); }
-.portal-card.driver:hover { border-color: var(--accent-green); }
-.portal-card.management:hover { border-color: var(--accent-purple); }
+.portal-card.student:hover { border-color: var(--accent-blue); background: rgba(59, 130, 246, 0.1); }
+.portal-card.driver:hover { border-color: var(--accent-green); background: rgba(16, 185, 129, 0.1); }
+.portal-card.management:hover { border-color: var(--accent-purple); background: rgba(139, 92, 246, 0.1); }
 
 /* ================= BUS SELECTION MODAL ================= */
 #busSelectModal {
@@ -174,8 +154,7 @@ body {
     position: relative;
     border-radius: 14px;
     border: 1px solid var(--card-border);
-    background-size: cover;
-    background-position: center;
+    background: rgba(30, 41, 59, 0.4);
     cursor: pointer;
     transition: all 0.25s ease;
     display: flex;
@@ -184,17 +163,12 @@ body {
     gap: 16px;
 }
 
-/* Background image options for bus cards */
-.route-card {
-    background-image: linear-gradient(to right, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.7)), url('https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&q=80&w=600');
-}
-
 .route-card-badge {
     width: 44px; height: 44px; border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex; align-items: center; justify-content: center;
     font-size: 18px; font-weight: 700; color: var(--accent-blue);
-    flex-shrink: 0; backdrop-filter: blur(8px);
+    flex-shrink: 0;
 }
 
 .route-card-info { flex-grow: 1; }
@@ -214,7 +188,7 @@ body {
 
 .route-card.selected {
     border-color: var(--accent-blue);
-    background-image: linear-gradient(to right, rgba(30, 58, 138, 0.9), rgba(15, 23, 42, 0.85)), url('https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&q=80&w=600');
+    background: rgba(59, 130, 246, 0.12);
 }
 
 .route-card.selected .route-card-badge {
@@ -226,7 +200,7 @@ body {
 .route-card.selected .route-card-radio { border-color: var(--accent-blue); }
 .route-card.selected .route-card-radio::after { transform: scale(1); }
 
-.route-card:hover { border-color: rgba(255, 255, 255, 0.4); }
+.route-card:hover { border-color: rgba(255, 255, 255, 0.3); }
 
 /* Main Dashboard Elements */
 #appInterface { display: none; }
