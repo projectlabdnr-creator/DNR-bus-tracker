@@ -17,16 +17,16 @@
 
 <style>
 :root {
-    --bg-main: #030712;
-    --card-bg: rgba(15, 23, 42, 0.85);
-    --card-border: rgba(255, 255, 255, 0.12);
-    --accent-blue: #3b82f6;
-    --accent-glow: rgba(59, 130, 246, 0.4);
-    --accent-green: #10b981;
-    --accent-red: #ef4444;
-    --accent-purple: #8b5cf6;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
+    /* Daytime Sky Blue Theme Palette */
+    --bg-main: linear-gradient(180deg, #3b82f6 0%, #60a5fa 40%, #93c5fd 75%, #e0f2fe 100%);
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --card-border: rgba(255, 255, 255, 0.6);
+    --accent-blue: #2563eb;
+    --accent-green: #059669;
+    --accent-red: #dc2626;
+    --accent-purple: #7c3aed;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
 }
 
 * { box-sizing: border-box; }
@@ -34,47 +34,48 @@
 body {
     margin: 0;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: var(--bg-main);
+    background: var(--bg-main);
+    background-attachment: fixed;
     color: var(--text-primary);
     min-height: 100vh;
 }
 
-/* Background Animated Grid Overlay */
-.bg-grid {
+/* CSS-Generated Cloud Overlays */
+.bg-clouds {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: -1;
-    background-size: 50px 50px;
+    pointer-events: none;
     background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.8) 0%, transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.7) 0%, transparent 45%),
+        radial-gradient(circle at 50% 65%, rgba(255, 255, 255, 0.6) 0%, transparent 50%),
+        radial-gradient(circle at 25% 85%, rgba(255, 255, 255, 0.75) 0%, transparent 40%);
+    filter: blur(35px);
 }
 
 /* ================= PORTAL SELECTION SCREEN ================= */
 #roleSelectionScreen {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: #030712;
+    background: transparent;
     display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 20px;
     overflow-y: auto;
 }
 
 .role-box {
-    background: rgba(15, 23, 42, 0.8);
+    background: var(--card-bg);
     border: 1px solid var(--card-border);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(25px);
     padding: 40px 32px; border-radius: 28px; text-align: center; max-width: 900px; width: 100%;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
 }
 
 .role-box h1 {
     font-size: 32px; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.5px;
-    background: linear-gradient(135deg, #ffffff 0%, #60a5fa 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    color: #1e3a8a;
 }
-.role-box p { color: var(--text-secondary); margin-bottom: 32px; font-size: 14px; }
+.role-box p { color: var(--text-secondary); margin-bottom: 32px; font-size: 14px; font-weight: 500; }
 
-/* Portal Cards without Background Images */
 .portal-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -86,7 +87,7 @@ body {
     height: 220px;
     border-radius: 20px;
     overflow: hidden;
-    border: 1px solid var(--card-border);
+    border: 1px solid rgba(255, 255, 255, 0.8);
     cursor: pointer;
     transition: all 0.35s ease;
     display: flex;
@@ -94,7 +95,7 @@ body {
     justify-content: space-between;
     padding: 24px;
     text-align: left;
-    background: rgba(30, 41, 59, 0.5);
+    background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(10px);
 }
 
@@ -106,12 +107,12 @@ body {
     margin-bottom: 16px;
 }
 
-.portal-card.student .portal-icon { background: rgba(59, 130, 246, 0.15); color: #fff; border: 1px solid rgba(59, 130, 246, 0.3); }
-.portal-card.driver .portal-icon { background: rgba(16, 185, 129, 0.15); color: #fff; border: 1px solid rgba(16, 185, 129, 0.3); }
-.portal-card.management .portal-icon { background: rgba(139, 92, 246, 0.15); color: #fff; border: 1px solid rgba(139, 92, 246, 0.3); }
+.portal-card.student .portal-icon { background: rgba(37, 99, 235, 0.15); color: #1d4ed8; border: 1px solid rgba(37, 99, 235, 0.3); }
+.portal-card.driver .portal-icon { background: rgba(5, 150, 105, 0.15); color: #047857; border: 1px solid rgba(5, 150, 105, 0.3); }
+.portal-card.management .portal-icon { background: rgba(124, 58, 237, 0.15); color: #6d28d9; border: 1px solid rgba(124, 58, 237, 0.3); }
 
 .portal-card h3 {
-    margin: 0 0 8px 0; font-size: 20px; font-weight: 700; color: #fff;
+    margin: 0 0 8px 0; font-size: 20px; font-weight: 700; color: var(--text-primary);
     display: flex; align-items: center; justify-content: space-between;
 }
 
@@ -121,30 +122,29 @@ body {
 
 .portal-card:hover {
     transform: translateY(-6px);
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
 }
 
-.portal-card.student:hover { border-color: var(--accent-blue); background: rgba(59, 130, 246, 0.1); }
-.portal-card.driver:hover { border-color: var(--accent-green); background: rgba(16, 185, 129, 0.1); }
-.portal-card.management:hover { border-color: var(--accent-purple); background: rgba(139, 92, 246, 0.1); }
+.portal-card.student:hover { border-color: var(--accent-blue); background: rgba(255, 255, 255, 0.95); }
+.portal-card.driver:hover { border-color: var(--accent-green); background: rgba(255, 255, 255, 0.95); }
+.portal-card.management:hover { border-color: var(--accent-purple); background: rgba(255, 255, 255, 0.95); }
 
 /* ================= BUS SELECTION MODAL ================= */
 #busSelectModal {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(3, 7, 18, 0.85);
-    backdrop-filter: blur(16px);
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(12px);
     display: none; justify-content: center; align-items: center; z-index: 10000; padding: 20px;
 }
 
 .modal-box {
-    background: rgba(15, 23, 42, 0.95); border: 1px solid var(--card-border);
+    background: rgba(255, 255, 255, 0.92); border: 1px solid #ffffff;
     padding: 32px; border-radius: 28px; width: 100%; max-width: 500px; text-align: center;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     max-height: 90vh; overflow-y: auto;
 }
 
-.modal-box h2 { font-size: 22px; font-weight: 700; margin-top: 0; margin-bottom: 20px; color: #fff; }
+.modal-box h2 { font-size: 22px; font-weight: 700; margin-top: 0; margin-bottom: 20px; color: var(--text-primary); }
 
 .route-cards-list {
     display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; text-align: left;
@@ -153,8 +153,8 @@ body {
 .route-card {
     position: relative;
     border-radius: 14px;
-    border: 1px solid var(--card-border);
-    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.7);
     cursor: pointer;
     transition: all 0.25s ease;
     display: flex;
@@ -165,19 +165,19 @@ body {
 
 .route-card-badge {
     width: 44px; height: 44px; border-radius: 10px;
-    background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(37, 99, 235, 0.1); border: 1px solid rgba(37, 99, 235, 0.2);
     display: flex; align-items: center; justify-content: center;
     font-size: 18px; font-weight: 700; color: var(--accent-blue);
     flex-shrink: 0;
 }
 
 .route-card-info { flex-grow: 1; }
-.route-card-info h4 { margin: 0 0 4px 0; font-size: 15px; font-weight: 700; color: #fff; }
+.route-card-info h4 { margin: 0 0 4px 0; font-size: 15px; font-weight: 700; color: var(--text-primary); }
 .route-card-info p { margin: 0; font-size: 12px; color: var(--text-secondary); }
 
 .route-card-radio {
     width: 20px; height: 20px; border-radius: 50%;
-    border: 2px solid var(--card-border); display: flex; align-items: center; justify-content: center;
+    border: 2px solid #cbd5e1; display: flex; align-items: center; justify-content: center;
     transition: all 0.2s;
 }
 
@@ -188,7 +188,8 @@ body {
 
 .route-card.selected {
     border-color: var(--accent-blue);
-    background: rgba(59, 130, 246, 0.12);
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
 }
 
 .route-card.selected .route-card-badge {
@@ -200,50 +201,51 @@ body {
 .route-card.selected .route-card-radio { border-color: var(--accent-blue); }
 .route-card.selected .route-card-radio::after { transform: scale(1); }
 
-.route-card:hover { border-color: rgba(255, 255, 255, 0.3); }
+.route-card:hover { border-color: var(--accent-blue); }
 
 /* Main Dashboard Elements */
 #appInterface { display: none; }
 header {
-    background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--card-border); padding: 18px 5%;
     display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
-.logo { font-size: 19px; font-weight: 800; letter-spacing: -0.5px; color: #fff; display: flex; align-items: center; gap: 10px; }
-.logo::before { content: ''; display: inline-block; width: 10px; height: 10px; background: var(--accent-blue); border-radius: 50%; box-shadow: 0 0 14px var(--accent-blue); }
+.logo { font-size: 19px; font-weight: 800; letter-spacing: -0.5px; color: #1e3a8a; display: flex; align-items: center; gap: 10px; }
+.logo::before { content: ''; display: inline-block; width: 10px; height: 10px; background: var(--accent-blue); border-radius: 50%; box-shadow: 0 0 10px var(--accent-blue); }
 .role-badge {
-    background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4);
-    color: #60a5fa; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    background: rgba(37, 99, 235, 0.1); border: 1px solid rgba(37, 99, 235, 0.3);
+    color: var(--accent-blue); padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
 }
 .container { width: 92%; max-width: 1200px; margin: 32px auto; }
 
 .card {
     background: var(--card-bg); border: 1px solid var(--card-border);
     backdrop-filter: blur(20px); padding: 28px; margin-bottom: 28px; border-radius: 24px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); transition: transform 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06); transition: transform 0.3s ease;
 }
-.card:hover { border-color: rgba(255, 255, 255, 0.25); }
-.card h2 { margin: 0 0 22px 0; font-size: 19px; font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 8px; }
+.card:hover { border-color: #ffffff; }
+.card h2 { margin: 0 0 22px 0; font-size: 19px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
 
 .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; }
 .info-card {
-    background: rgba(3, 7, 18, 0.6); border: 1px solid var(--card-border);
+    background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(0, 0, 0, 0.06);
     padding: 20px; border-radius: 16px; text-align: left; transition: transform 0.2s;
 }
-.info-card:hover { transform: translateY(-3px); border-color: rgba(59, 130, 246, 0.4); }
-.info-card h3 { margin: 0 0 6px; font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.8px; }
-.info-card p { margin: 0; font-size: 20px; font-weight: 700; color: #fff; }
+.info-card:hover { transform: translateY(-3px); border-color: var(--accent-blue); }
+.info-card h3 { margin: 0 0 6px; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.8px; }
+.info-card p { margin: 0; font-size: 20px; font-weight: 800; color: var(--text-primary); }
 
 .badge-status { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; padding: 5px 12px; border-radius: 20px; }
-.status-running { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-.status-offline { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+.status-running { background: rgba(5, 150, 105, 0.15); color: #047857; border: 1px solid rgba(5, 150, 105, 0.3); }
+.status-offline { background: rgba(220, 38, 38, 0.15); color: #b91c1c; border: 1px solid rgba(220, 38, 38, 0.3); }
 .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: pulse 1.5s infinite; }
 @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
 
+/* Light Street Map Styling */
 #map { 
     width: 100%; height: 480px; border-radius: 18px; border: 1px solid var(--card-border);
-    filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
 .controls { display: flex; gap: 14px; flex-wrap: wrap; }
@@ -251,31 +253,31 @@ button.action-btn {
     border: none; padding: 14px 24px; border-radius: 12px; color: white;
     font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.25s ease;
 }
-.start-btn { background: var(--accent-green); box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35); }
-.start-btn:hover { background: #059669; transform: translateY(-2px); }
-.stop-btn { background: var(--accent-red); box-shadow: 0 4px 18px rgba(239, 68, 68, 0.35); }
-.stop-btn:hover { background: #dc2626; transform: translateY(-2px); }
-.emergency-btn { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); width: 100%; padding: 18px; font-size: 15px; letter-spacing: 0.5px; box-shadow: 0 6px 25px rgba(239, 68, 68, 0.45); }
+.start-btn { background: var(--accent-green); box-shadow: 0 4px 18px rgba(5, 150, 105, 0.3); }
+.start-btn:hover { background: #047857; transform: translateY(-2px); }
+.stop-btn { background: var(--accent-red); box-shadow: 0 4px 18px rgba(220, 38, 38, 0.3); }
+.stop-btn:hover { background: #b91c1c; transform: translateY(-2px); }
+.emergency-btn { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); width: 100%; padding: 18px; font-size: 15px; letter-spacing: 0.5px; box-shadow: 0 6px 25px rgba(220, 38, 38, 0.35); }
 .emergency-btn:hover { transform: translateY(-2px); }
-.switch-btn { background: rgba(255, 255, 255, 0.08); border: 1px solid var(--card-border); }
-.switch-btn:hover { background: rgba(255, 255, 255, 0.18); }
-.delete-btn { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 4px 10px; border-radius: 8px; cursor: pointer; float: right; font-size: 11px; }
+.switch-btn { background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.1); color: var(--text-primary); }
+.switch-btn:hover { background: rgba(0, 0, 0, 0.1); }
+.delete-btn { background: rgba(220, 38, 38, 0.15); color: #b91c1c; border: 1px solid rgba(220, 38, 38, 0.3); padding: 4px 10px; border-radius: 8px; cursor: pointer; float: right; font-size: 11px; font-weight: 700; }
 
-.status { margin-top: 18px; padding: 16px; background: rgba(3, 7, 18, 0.6); border-left: 4px solid var(--accent-blue); border-radius: 12px; font-size: 13px; color: var(--text-secondary); }
-.notification { padding: 16px; margin: 12px 0; background: rgba(3, 7, 18, 0.6); border-left: 4px solid var(--accent-blue); border-radius: 12px; word-break: break-word; font-size: 14px; }
+.status { margin-top: 18px; padding: 16px; background: rgba(255, 255, 255, 0.8); border-left: 4px solid var(--accent-blue); border-radius: 12px; font-size: 13px; color: var(--text-secondary); }
+.notification { padding: 16px; margin: 12px 0; background: rgba(255, 255, 255, 0.8); border-left: 4px solid var(--accent-blue); border-radius: 12px; word-break: break-word; font-size: 14px; color: var(--text-primary); }
 
 .emergency-card-active {
-    background: rgba(127, 29, 29, 0.5) !important;
+    background: rgba(254, 226, 226, 0.95) !important;
     border: 1px solid #ef4444 !important;
-    box-shadow: 0 0 35px rgba(239, 68, 68, 0.4) !important;
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.25) !important;
 }
 </style>
 </head>
 
 <body>
 
-<!-- Background Grid Overlay -->
-<div class="bg-grid"></div>
+<!-- Background Soft Cloud Overlay -->
+<div class="bg-clouds"></div>
 
 <!-- PORTAL SELECTION SCREEN -->
 <div id="roleSelectionScreen">
@@ -397,9 +399,9 @@ button.action-btn {
                     <h3>GPS Signal</h3>
                     <p id="gpsStatus">OFFLINE</p>
                 </div>
-                <div class="info-card" style="border-color: rgba(16, 185, 129, 0.4);">
+                <div class="info-card" style="border-color: rgba(5, 150, 105, 0.4);">
                     <h3>Estimated ETA</h3>
-                    <p id="busEta" style="color: #34d399;">--</p>
+                    <p id="busEta" style="color: #059669;">--</p>
                 </div>
             </div>
             <div id="systemStatus" class="status">
@@ -615,15 +617,15 @@ function listenToFirebase() {
             if (activeEmergencyBus) {
                 emergencyCard.className = "card emergency-card-active";
                 emergencyControls.innerHTML = `
-                    <h3 style="color: #f87171; margin-top:0;">⚠️ EMERGENCY ALERT ACTIVE ON ${activeEmergencyBus} ⚠️</h3>
-                    <p style="font-weight: 600; color: #fca5a5;">${data[activeEmergencyBus].emergencyMessage}</p>
+                    <h3 style="color: #dc2626; margin-top:0;">⚠️ EMERGENCY ALERT ACTIVE ON ${activeEmergencyBus} ⚠️</h3>
+                    <p style="font-weight: 600; color: #b91c1c;">${data[activeEmergencyBus].emergencyMessage}</p>
                     <button class="action-btn stop-btn" onclick="clearEmergency('${activeEmergencyBus}')">RESOLVE EMERGENCY FOR ${activeEmergencyBus}</button>
                 `;
             } else {
                 emergencyCard.className = "card";
                 emergencyControls.innerHTML = `
                     <h2>Emergency Status</h2>
-                    <p style="color: #34d399; font-weight: 600;">All bus routes operating normally.</p>
+                    <p style="color: #059669; font-weight: 600;">All bus routes operating normally.</p>
                 `;
             }
         });
@@ -636,8 +638,8 @@ function listenToFirebase() {
             if (data && data.emergency) {
                 emergencyCard.className = "card emergency-card-active";
                 emergencyControls.innerHTML = `
-                    <h3 style="color: #f87171; margin-top:0;">⚠️ EMERGENCY ALERT ACTIVE (${selectedBus}) ⚠️</h3>
-                    <p style="font-weight: 600; color: #fca5a5;">${data.emergencyMessage || 'Immediate assistance required.'}</p>
+                    <h3 style="color: #dc2626; margin-top:0;">⚠️ EMERGENCY ALERT ACTIVE (${selectedBus}) ⚠️</h3>
+                    <p style="font-weight: 600; color: #b91c1c;">${data.emergencyMessage || 'Immediate assistance required.'}</p>
                     ${userRole !== 'Student' ? `<button class="action-btn stop-btn" onclick="clearEmergency('${selectedBus}')">RESOLVE EMERGENCY</button>` : ''}
                 `;
             } else {
