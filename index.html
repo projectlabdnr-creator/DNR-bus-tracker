@@ -242,9 +242,14 @@ header {
 .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: pulse 1.5s infinite; }
 @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
 
-/* Light Street Map Styling */
+/* Light Street Map Styling with Responsive Mobile Heights */
 #map { 
-    width: 100%; height: 480px; border-radius: 18px; border: 1px solid var(--card-border);
+    width: 100%; 
+    height: 50vh;
+    max-height: 480px;
+    min-height: 300px;
+    border-radius: 18px; 
+    border: 1px solid var(--card-border);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
@@ -286,7 +291,6 @@ button.action-btn {
         <p>Select your portal to enter the campus transit network</p>
         
         <div class="portal-grid">
-            <!-- Student Portal Card -->
             <div class="portal-card student" onclick="openBusModal('Student')">
                 <div>
                     <div class="portal-icon">🎓</div>
@@ -295,7 +299,6 @@ button.action-btn {
                 <p>Track bus live locations, estimated time of arrival, and announcements.</p>
             </div>
 
-            <!-- Driver Portal Card -->
             <div class="portal-card driver" onclick="openBusModal('Driver')">
                 <div>
                     <div class="portal-icon">🚌</div>
@@ -304,7 +307,6 @@ button.action-btn {
                 <p>Broadcast live GPS location telemetry and alert emergency dispatches.</p>
             </div>
 
-            <!-- Management Portal Card -->
             <div class="portal-card management" onclick="openBusModal('Management')">
                 <div>
                     <div class="portal-icon">⚙️</div>
@@ -322,7 +324,6 @@ button.action-btn {
         <h2 id="modalTitle">Select Route</h2>
         
         <div class="route-cards-list" id="routeCardsContainer">
-            <!-- All Buses Option (Management Only) -->
             <div class="route-card" id="card-ALL" onclick="selectRouteOption('ALL')">
                 <div class="route-card-badge">🌐</div>
                 <div class="route-card-info">
@@ -332,7 +333,6 @@ button.action-btn {
                 <div class="route-card-radio"></div>
             </div>
 
-            <!-- Bus 01 -->
             <div class="route-card selected" id="card-BUS-01" onclick="selectRouteOption('BUS-01')">
                 <div class="route-card-badge">01</div>
                 <div class="route-card-info">
@@ -342,7 +342,6 @@ button.action-btn {
                 <div class="route-card-radio"></div>
             </div>
 
-            <!-- Bus 02 -->
             <div class="route-card" id="card-BUS-02" onclick="selectRouteOption('BUS-02')">
                 <div class="route-card-badge">02</div>
                 <div class="route-card-info">
@@ -352,7 +351,6 @@ button.action-btn {
                 <div class="route-card-radio"></div>
             </div>
 
-            <!-- Bus 03 -->
             <div class="route-card" id="card-BUS-03" onclick="selectRouteOption('BUS-03')">
                 <div class="route-card-badge">03</div>
                 <div class="route-card-info">
@@ -465,8 +463,64 @@ let map = null;
 let watchId = null;
 let busMarker = null;
 let currentDbRef = null;
+let previousEmergencyState = false;
+let previousAnnouncementsCount = -1;
 
 const dnrCollege = [16.5358, 81.5186];
+
+// Web Audio API Audio Synthesizer (No external mp3 needed)
+function playSoundAlert(type = 'notification') {
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (type === 'emergency') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(880, ctx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.4);
+            gain.gain.setValueAtTime(0.3, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.4);
+        } else {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(587.33, ctx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.2);
+            gain.gain.setValueAtTime(0.2, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.2);
+        }
+    } catch(e) {
+        console.log("Audio play blocked by browser policy until user interacts.");
+    }
+}
+
+// Auto-Load Saved Route Session on Startup
+window.addEventListener('DOMContentLoaded', () => {
+    const savedRole = localStorage.getItem("saved_role");
+    const savedBus = localStorage.getItem("saved_bus");
+
+    if (savedRole && savedBus) {
+        userRole = savedRole;
+        selectedBus = savedBus;
+        
+        document.getElementById("roleSelectionScreen").style.display = "none";
+        document.getElementById("appInterface").style.display = "block";
+        document.getElementById("currentRoleBadge").innerText = userRole;
+
+        document.getElementById("driverControlsSection").style.display = (userRole === "Driver") ? "block" : "none";
+        document.getElementById("managementSection").style.display = (userRole === "Management") ? "block" : "none";
+
+        initMap();
+    }
+});
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371;
@@ -529,6 +583,10 @@ function selectRouteOption(busKey) {
 }
 
 function confirmRoleAndBus() {
+    // Save to localStorage
+    localStorage.setItem("saved_role", userRole);
+    localStorage.setItem("saved_bus", selectedBus);
+
     document.getElementById("busSelectModal").style.display = "none";
     document.getElementById("roleSelectionScreen").style.display = "none";
     document.getElementById("appInterface").style.display = "block";
@@ -551,6 +609,10 @@ function logoutRole() {
     stopTracking();
     clearBusMarker();
     resetUI();
+
+    // Clear saved route memory
+    localStorage.removeItem("saved_role");
+    localStorage.removeItem("saved_bus");
 
     if (currentDbRef) {
         currentDbRef.off();
@@ -615,6 +677,10 @@ function listenToFirebase() {
             }
 
             if (activeEmergencyBus) {
+                if (!previousEmergencyState) {
+                    playSoundAlert('emergency');
+                    previousEmergencyState = true;
+                }
                 emergencyCard.className = "card emergency-card-active";
                 emergencyControls.innerHTML = `
                     <h3 style="color: #dc2626; margin-top:0;">⚠️ EMERGENCY ALERT ACTIVE ON ${activeEmergencyBus} ⚠️</h3>
@@ -622,6 +688,7 @@ function listenToFirebase() {
                     <button class="action-btn stop-btn" onclick="clearEmergency('${activeEmergencyBus}')">RESOLVE EMERGENCY FOR ${activeEmergencyBus}</button>
                 `;
             } else {
+                previousEmergencyState = false;
                 emergencyCard.className = "card";
                 emergencyControls.innerHTML = `
                     <h2>Emergency Status</h2>
@@ -636,6 +703,10 @@ function listenToFirebase() {
             clearBusMarker();
 
             if (data && data.emergency) {
+                if (!previousEmergencyState) {
+                    playSoundAlert('emergency');
+                    previousEmergencyState = true;
+                }
                 emergencyCard.className = "card emergency-card-active";
                 emergencyControls.innerHTML = `
                     <h3 style="color: #dc2626; margin-top:0;">⚠️ EMERGENCY ALERT ACTIVE (${selectedBus}) ⚠️</h3>
@@ -643,6 +714,7 @@ function listenToFirebase() {
                     ${userRole !== 'Student' ? `<button class="action-btn stop-btn" onclick="clearEmergency('${selectedBus}')">RESOLVE EMERGENCY</button>` : ''}
                 `;
             } else {
+                previousEmergencyState = false;
                 emergencyCard.className = "card";
                 emergencyControls.innerHTML = `
                     <h2>Emergency Alert</h2>
@@ -677,7 +749,14 @@ function listenToAnnouncements() {
 
         if (data) {
             let count = 0;
-            Object.keys(data).reverse().forEach((key) => {
+            const keys = Object.keys(data);
+            
+            if (previousAnnouncementsCount !== -1 && keys.length > previousAnnouncementsCount) {
+                playSoundAlert('notification');
+            }
+            previousAnnouncementsCount = keys.length;
+
+            keys.reverse().forEach((key) => {
                 const item = data[key];
 
                 if (selectedBus === "ALL" || item.targetBus === "ALL" || item.targetBus === selectedBus) {
@@ -701,6 +780,7 @@ function listenToAnnouncements() {
                 list.innerHTML = `<div class="notification">No active announcements for ${selectedBus}.</div>`;
             }
         } else {
+            previousAnnouncementsCount = 0;
             list.innerHTML = `<div class="notification">Bus service active. Check live map for real-time tracking.</div>`;
         }
     });
