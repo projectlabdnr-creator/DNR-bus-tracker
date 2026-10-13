@@ -130,15 +130,15 @@ body {
 /* ================= BUS SELECTION MODAL ================= */
 #busSelectModal {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(15, 23, 42, 0.4);
+    background: rgba(15, 23, 42, 0.5);
     backdrop-filter: blur(12px);
     display: none; justify-content: center; align-items: center; z-index: 10000; padding: 20px;
 }
 
 .modal-box {
-    background: rgba(255, 255, 255, 0.92); border: 1px solid #ffffff;
+    background: rgba(255, 255, 255, 0.95); border: 1px solid #ffffff;
     padding: 32px; border-radius: 28px; width: 100%; max-width: 500px; text-align: center;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
     max-height: 90vh; overflow-y: auto;
 }
 
@@ -499,3 +499,4 @@ function playSoundAlert(type = 'notification') {
 
         if (type === 'emergency') {
             osc.type = 'sawtooth';
+ 
