@@ -123,176 +123,49 @@ body {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
 }
 
-.portal-card.student:hover { border-color: var(--accent-blue); background: rgba(255, 255, 255, 0.95); }
-.portal-card.driver:hover { border-color: var(--accent-green); background: rgba(255, 255, 255, 0.95); }
-.portal-card.management:hover { border-color: var(--accent-purple); background: rgba(255, 255, 255, 0.95); }
-
 /* ================= BUS SELECTION MODAL ================= */
 #busSelectModal {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(15, 23, 42, 0.5);
+    background: rgba(15, 23, 42, 0.6);
     backdrop-filter: blur(12px);
     display: none; justify-content: center; align-items: center; z-index: 10000; padding: 20px;
 }
 
 .modal-box {
-    background: rgba(255, 255, 255, 0.95); border: 1px solid #ffffff;
+    background: #ffffff; border: 1px solid #ffffff;
     padding: 32px; border-radius: 28px; width: 100%; max-width: 500px; text-align: center;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
-
-.modal-box h2 { font-size: 22px; font-weight: 700; margin-top: 0; margin-bottom: 20px; color: var(--text-primary); }
 
 .route-cards-list {
     display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; text-align: left;
 }
 
 .route-card {
-    position: relative;
-    border-radius: 14px;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    background: rgba(255, 255, 255, 0.7);
-    cursor: pointer;
-    transition: all 0.25s ease;
-    display: flex;
-    align-items: center;
-    padding: 16px;
-    gap: 16px;
+    border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc;
+    cursor: pointer; display: flex; align-items: center; padding: 16px; gap: 16px;
 }
+.route-card.selected { border-color: var(--accent-blue); background: #eff6ff; }
 
-.route-card-badge {
-    width: 44px; height: 44px; border-radius: 10px;
-    background: rgba(37, 99, 235, 0.1); border: 1px solid rgba(37, 99, 235, 0.2);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; font-weight: 700; color: var(--accent-blue);
-    flex-shrink: 0;
-}
-
-.route-card-info { flex-grow: 1; }
-.route-card-info h4 { margin: 0 0 4px 0; font-size: 15px; font-weight: 700; color: var(--text-primary); }
-.route-card-info p { margin: 0; font-size: 12px; color: var(--text-secondary); }
-
-.route-card-radio {
-    width: 20px; height: 20px; border-radius: 50%;
-    border: 2px solid #cbd5e1; display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-}
-
-.route-card-radio::after {
-    content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--accent-blue);
-    transform: scale(0); transition: transform 0.2s;
-}
-
-.route-card.selected {
-    border-color: var(--accent-blue);
-    background: #ffffff;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
-}
-
-.route-card.selected .route-card-badge {
-    background: var(--accent-blue);
-    color: #fff;
-    border-color: var(--accent-blue);
-}
-
-.route-card.selected .route-card-radio { border-color: var(--accent-blue); }
-.route-card.selected .route-card-radio::after { transform: scale(1); }
-
-.route-card:hover { border-color: var(--accent-blue); }
-
-/* Main Dashboard Elements */
 #appInterface { display: none; }
 header {
     background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--card-border); padding: 14px 20px;
     display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
-.logo { font-size: 17px; font-weight: 800; letter-spacing: -0.5px; color: #1e3a8a; display: flex; align-items: center; gap: 8px; }
-.logo::before { content: ''; display: inline-block; width: 9px; height: 9px; background: var(--accent-blue); border-radius: 50%; box-shadow: 0 0 8px var(--accent-blue); }
-
-.header-actions {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.role-badge {
-    background: rgba(37, 99, 235, 0.1); border: 1px solid rgba(37, 99, 235, 0.3);
-    color: var(--accent-blue); padding: 5px 10px; border-radius: 16px; font-size: 11px; font-weight: 700; text-transform: uppercase;
-}
-
-.header-btn {
-    border: none; padding: 6px 12px; border-radius: 8px;
-    font-size: 11px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s ease;
-}
-.btn-change-route {
-    background: rgba(37, 99, 235, 0.12); color: var(--accent-blue); border: 1px solid rgba(37, 99, 235, 0.3);
-}
-.btn-change-route:hover { background: rgba(37, 99, 235, 0.22); }
-
-.btn-exit-portal {
-    background: rgba(220, 38, 38, 0.12); color: var(--accent-red); border: 1px solid rgba(220, 38, 38, 0.3);
-}
-.btn-exit-portal:hover { background: rgba(220, 38, 38, 0.22); }
+.logo { font-size: 17px; font-weight: 800; color: #1e3a8a; }
+.header-actions { display: flex; gap: 8px; align-items: center; }
+.role-badge { background: rgba(37, 99, 235, 0.1); color: var(--accent-blue); padding: 5px 10px; border-radius: 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+.header-btn { border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; }
+.btn-change-route { background: rgba(37, 99, 235, 0.12); color: var(--accent-blue); }
+.btn-exit-portal { background: rgba(220, 38, 38, 0.12); color: var(--accent-red); }
 
 .container { width: 92%; max-width: 1200px; margin: 32px auto; }
-
-.card {
-    background: var(--card-bg); border: 1px solid var(--card-border);
-    backdrop-filter: blur(20px); padding: 28px; margin-bottom: 28px; border-radius: 24px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06); transition: transform 0.3s ease;
-}
-.card:hover { border-color: #ffffff; }
-.card h2 { margin: 0 0 22px 0; font-size: 19px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
-
-.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; }
-.info-card {
-    background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(0, 0, 0, 0.06);
-    padding: 20px; border-radius: 16px; text-align: left; transition: transform 0.2s;
-}
-.info-card:hover { transform: translateY(-3px); border-color: var(--accent-blue); }
-.info-card h3 { margin: 0 0 6px; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.8px; }
-.info-card p { margin: 0; font-size: 20px; font-weight: 800; color: var(--text-primary); }
-
-.badge-status { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; padding: 5px 12px; border-radius: 20px; }
-.status-running { background: rgba(5, 150, 105, 0.15); color: #047857; border: 1px solid rgba(5, 150, 105, 0.3); }
-.status-offline { background: rgba(220, 38, 38, 0.15); color: #b91c1c; border: 1px solid rgba(220, 38, 38, 0.3); }
-.pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: pulse 1.5s infinite; }
-@keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
-
-#map { 
-    width: 100%; 
-    height: 50vh;
-    max-height: 480px;
-    min-height: 300px;
-    border-radius: 18px; 
-    border: 1px solid var(--card-border);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-}
-
-.controls { display: flex; gap: 14px; flex-wrap: wrap; }
-button.action-btn {
-    border: none; padding: 14px 24px; border-radius: 12px; color: white;
-    font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.25s ease;
-}
-.start-btn { background: var(--accent-green); box-shadow: 0 4px 18px rgba(5, 150, 105, 0.3); }
-.start-btn:hover { background: #047857; transform: translateY(-2px); }
-.stop-btn { background: var(--accent-red); box-shadow: 0 4px 18px rgba(220, 38, 38, 0.3); }
-.stop-btn:hover { background: #b91c1c; transform: translateY(-2px); }
-.emergency-btn { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); width: 100%; padding: 18px; font-size: 15px; letter-spacing: 0.5px; box-shadow: 0 6px 25px rgba(220, 38, 38, 0.35); }
-.emergency-btn:hover { transform: translateY(-2px); }
-.delete-btn { background: rgba(220, 38, 38, 0.15); color: #b91c1c; border: 1px solid rgba(220, 38, 38, 0.3); padding: 4px 10px; border-radius: 8px; cursor: pointer; float: right; font-size: 11px; font-weight: 700; }
-
-.status { margin-top: 18px; padding: 16px; background: rgba(255, 255, 255, 0.8); border-left: 4px solid var(--accent-blue); border-radius: 12px; font-size: 13px; color: var(--text-secondary); }
-.notification { padding: 16px; margin: 12px 0; background: rgba(255, 255, 255, 0.8); border-left: 4px solid var(--accent-blue); border-radius: 12px; word-break: break-word; font-size: 14px; color: var(--text-primary); }
-
-.emergency-card-active {
-    background: rgba(254, 226, 226, 0.95) !important;
-    border: 1px solid #ef4444 !important;
-    box-shadow: 0 0 30px rgba(239, 68, 68, 0.25) !important;
-}
+.card { background: var(--card-bg); padding: 28px; margin-bottom: 28px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+#map { width: 100%; height: 400px; border-radius: 18px; }
+button.action-btn { border: none; padding: 14px 24px; border-radius: 12px; color: white; font-weight: 700; cursor: pointer; }
+.start-btn { background: var(--accent-green); }
+.stop-btn { background: var(--accent-red); }
 </style>
 </head>
 
@@ -307,78 +180,49 @@ button.action-btn {
         <p>Select your portal to enter the campus transit network</p>
         
         <div class="portal-grid">
-            <div class="portal-card student" onclick="openBusModal('Student')">
+            <div class="portal-card student" onclick="window.openModal('Student')">
                 <div>
                     <div class="portal-icon">🎓</div>
-                    <h3>Student Portal <span>&rarr;</span></h3>
+                    <h3>Student Portal &rarr;</h3>
                 </div>
-                <p>Track bus live locations, estimated time of arrival, and announcements.</p>
+                <p>Track bus live locations and ETAs.</p>
             </div>
 
-            <div class="portal-card driver" onclick="openBusModal('Driver')">
+            <div class="portal-card driver" onclick="window.openModal('Driver')">
                 <div>
                     <div class="portal-icon">🚌</div>
-                    <h3>Driver Portal <span>&rarr;</span></h3>
+                    <h3>Driver Portal &rarr;</h3>
                 </div>
-                <p>Broadcast live GPS location telemetry and alert emergency dispatches.</p>
+                <p>Broadcast GPS location telemetry.</p>
             </div>
 
-            <div class="portal-card management" onclick="openBusModal('Management')">
+            <div class="portal-card management" onclick="window.openModal('Management')">
                 <div>
                     <div class="portal-icon">⚙️</div>
-                    <h3>Management Portal <span>&rarr;</span></h3>
+                    <h3>Management Portal &rarr;</h3>
                 </div>
-                <p>Monitor all routes globally, issue announcements, and clear alerts.</p>
+                <p>Monitor all routes globally.</p>
             </div>
         </div>
     </div>
 </div>
 
 <!-- BUS ROUTE SELECTION MODAL -->
-<div id="busSelectModal">
+<div id="busSelectModal" style="display: none;">
     <div class="modal-box">
         <h2 id="modalTitle">Select Route</h2>
         
-        <div class="route-cards-list" id="routeCardsContainer">
-            <div class="route-card" id="card-ALL" onclick="selectRouteOption('ALL')">
-                <div class="route-card-badge">🌐</div>
-                <div class="route-card-info">
-                    <h4>ALL BUSES</h4>
-                    <p>Global Fleet Overview & Management View</p>
-                </div>
-                <div class="route-card-radio"></div>
+        <div class="route-cards-list">
+            <div class="route-card selected" id="card-BUS-01" onclick="window.selectBus('BUS-01')">
+                <div><b>BUS-01</b>: Bhyravapatnam &rarr; DNR College</div>
             </div>
-
-            <div class="route-card selected" id="card-BUS-01" onclick="selectRouteOption('BUS-01')">
-                <div class="route-card-badge">01</div>
-                <div class="route-card-info">
-                    <h4>BUS-01</h4>
-                    <p>Bhyravapatnam &rarr; DNR College of Eng.</p>
-                </div>
-                <div class="route-card-radio"></div>
-            </div>
-
-            <div class="route-card" id="card-BUS-02" onclick="selectRouteOption('BUS-02')">
-                <div class="route-card-badge">02</div>
-                <div class="route-card-info">
-                    <h4>BUS-02</h4>
-                    <p>Ganapavaram &rarr; DNR College of Eng.</p>
-                </div>
-                <div class="route-card-radio"></div>
-            </div>
-
-            <div class="route-card" id="card-BUS-03" onclick="selectRouteOption('BUS-03')">
-                <div class="route-card-badge">03</div>
-                <div class="route-card-info">
-                    <h4>BUS-03</h4>
-                    <p>Palakollu &rarr; DNR College of Eng.</p>
-                </div>
-                <div class="route-card-radio"></div>
+            <div class="route-card" id="card-BUS-02" onclick="window.selectBus('BUS-02')">
+                <div><b>BUS-02</b>: Ganapavaram &rarr; DNR College</div>
             </div>
         </div>
 
-        <button class="action-btn start-btn" style="width: 100%; margin-bottom: 10px;" onclick="confirmRoleAndBus()">CONFIRM ROUTE & CONTINUE</button>
-        <button class="action-btn" style="width: 100%; color: var(--text-primary); background: rgba(0,0,0,0.06);" onclick="closeBusModalOnly()">CANCEL</button>
+        <button class="action-btn start-btn" style="width: 100%; margin-bottom: 10px;" onclick="window.confirmRoute()">CONTINUE</button>
+        <button class="action-btn" style="width: 100%; background: #cbd5e1; color:#0f172a;" onclick="window.closeModal()">CANCEL</button>
     </div>
 </div>
 
@@ -388,73 +232,15 @@ button.action-btn {
         <div class="logo">DNR College Bus Tracking</div>
         <div class="header-actions">
             <span class="role-badge" id="currentRoleBadge">Student</span>
-            <button class="header-btn btn-change-route" onclick="openBusModal(userRole)">Change Route</button>
-            <button class="header-btn btn-exit-portal" onclick="returnToRoleSelection()">Exit Portal</button>
+            <button class="header-btn btn-change-route" onclick="window.openModal(window.userRole)">Change Route</button>
+            <button class="header-btn btn-exit-portal" onclick="window.exitPortal()">Exit Portal</button>
         </div>
     </header>
 
     <div class="container">
         <div class="card">
-            <h2>Bus Telemetry</h2>
-            <div class="info-grid">
-                <div class="info-card">
-                    <h3>Bus Identifier</h3>
-                    <p id="busNumber">BUS-01</p>
-                </div>
-                <div class="info-card">
-                    <h3>Operational Status</h3>
-                    <div id="busStatusContainer" style="margin-top:4px;">
-                        <span class="badge-status status-offline" id="busStatus"><span class="pulse-dot"></span> OFFLINE</span>
-                    </div>
-                </div>
-                <div class="info-card">
-                    <h3>Current Speed</h3>
-                    <p id="busSpeed">0 km/h</p>
-                </div>
-                <div class="info-card">
-                    <h3>GPS Signal</h3>
-                    <p id="gpsStatus">OFFLINE</p>
-                </div>
-                <div class="info-card" style="border-color: rgba(5, 150, 105, 0.4);">
-                    <h3>Estimated ETA</h3>
-                    <p id="busEta" style="color: #059669;">--</p>
-                </div>
-            </div>
-            <div id="systemStatus" class="status">
-                Ready to track live location.
-            </div>
-        </div>
-
-        <div class="card">
             <h2>Live GPS Navigation</h2>
             <div id="map"></div>
-        </div>
-
-        <div class="card" id="driverControlsSection">
-            <h2>Driver GPS Controller</h2>
-            <div class="controls">
-                <button class="action-btn start-btn" onclick="startTracking()">START GPS BROADCAST</button>
-                <button class="action-btn stop-btn" onclick="stopTracking()">STOP GPS BROADCAST</button>
-            </div>
-        </div>
-
-        <div class="card" id="managementSection" style="display: none;">
-            <h2>Management Administrative Panel</h2>
-            <button class="action-btn start-btn" onclick="sendBroadcast()">Broadcast Announcement</button>
-        </div>
-
-        <div class="card">
-            <h2>Announcements</h2>
-            <div id="notificationsList">
-                <div class="notification">Loading announcements...</div>
-            </div>
-        </div>
-
-        <div class="card" id="emergencyCard">
-            <h2>Emergency Controls</h2>
-            <div id="emergencyControls">
-                <button class="action-btn emergency-btn" onclick="sendEmergency()">TRIGGER EMERGENCY BROADCAST</button>
-            </div>
         </div>
     </div>
 </div>
@@ -462,41 +248,48 @@ button.action-btn {
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-const firebaseConfig = {
-    apiKey: "AIzaSyCsiL4nML9FD4skd_v0850zsdQTCeqYg8M",
-    authDomain: "college-bus-tracking-sys-a4bf7.firebaseapp.com",
-    databaseURL: "https://college-bus-tracking-sys-a4bf7-default-rtdb.firebaseio.com",
-    projectId: "college-bus-tracking-sys-a4bf7",
-    storageBucket: "college-bus-tracking-sys-a4bf7.firebasestorage.app",
-    messagingSenderId: "724758160522",
-    appId: "1:724758160522:web:107eac371f0286dc8a7973"
+window.userRole = "Student";
+window.selectedBus = "BUS-01";
+let mapInstance = null;
+
+window.openModal = function(role) {
+    window.userRole = role;
+    if (role === "Management") {
+        const pass = prompt("Enter Password (Manage):");
+        if (pass !== "Manage") return alert("Wrong password!");
+    }
+    document.getElementById("busSelectModal").style.display = "flex";
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+window.closeModal = function() {
+    document.getElementById("busSelectModal").style.display = "none";
+};
 
-let userRole = "";
-let selectedBus = "BUS-01";
-let map = null;
-let watchId = null;
-let busMarker = null;
-let currentDbRef = null;
-let previousEmergencyState = false;
-let previousAnnouncementsCount = -1;
+window.selectBus = function(bus) {
+    window.selectedBus = bus;
+    document.querySelectorAll('.route-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('card-' + bus).classList.add('selected');
+};
 
-const dnrCollege = [16.5358, 81.5186];
+window.confirmRoute = function() {
+    document.getElementById("busSelectModal").style.display = "none";
+    document.getElementById("roleSelectionScreen").style.display = "none";
+    document.getElementById("appInterface").style.display = "block";
+    document.getElementById("currentRoleBadge").innerText = window.userRole;
 
-function playSoundAlert(type = 'notification') {
-    try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return;
-        const ctx = new AudioContext();
+    if (!mapInstance) {
+        setTimeout(() => {
+            mapInstance = L.map('map').setView([16.5358, 81.5186], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapInstance);
+        }, 100);
+    }
+};
 
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
+window.exitPortal = function() {
+    document.getElementById("appInterface").style.display = "none";
+    document.getElementById("roleSelectionScreen").style.display = "flex";
+};
+</script>
 
-        if (type === 'emergency') {
-            osc.type = 'sawtooth';
- 
+</body>
+</html>
