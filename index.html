@@ -238,6 +238,14 @@ button.action-btn { border: none; padding: 14px 24px; border-radius: 12px; color
 
 .status { margin-top: 18px; padding: 16px; background: rgba(255, 255, 255, 0.8); border-left: 4px solid var(--accent-blue); border-radius: 12px; font-size: 13px; color: var(--text-secondary); }
 .notification { padding: 16px; margin: 12px 0; background: rgba(255, 255, 255, 0.8); border-left: 4px solid var(--accent-blue); border-radius: 12px; font-size: 14px; color: var(--text-primary); }
+
+.form-input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #cbd5e1; margin-bottom: 12px; font-family: inherit; }
+
+.emergency-card-active {
+    background: rgba(254, 226, 226, 0.95) !important;
+    border: 1px solid #ef4444 !important;
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.25) !important;
+}
 </style>
 </head>
 
@@ -285,41 +293,7 @@ button.action-btn { border: none; padding: 14px 24px; border-radius: 12px; color
         <h2 id="modalTitle">Select Route</h2>
         
         <div class="route-cards-list" id="routeCardsContainer">
-            <div class="route-card" id="card-ALL" onclick="window.selectRouteOption('ALL')">
-                <div class="route-card-badge">🌐</div>
-                <div class="route-card-info">
-                    <h4>ALL BUSES</h4>
-                    <p>Global Fleet Overview & Management View</p>
-                </div>
-                <div class="route-card-radio"></div>
-            </div>
-
-            <div class="route-card selected" id="card-BUS-01" onclick="window.selectRouteOption('BUS-01')">
-                <div class="route-card-badge">01</div>
-                <div class="route-card-info">
-                    <h4>BUS-01</h4>
-                    <p>Bhyravapatnam &rarr; DNR College of Eng.</p>
-                </div>
-                <div class="route-card-radio"></div>
-            </div>
-
-            <div class="route-card" id="card-BUS-02" onclick="window.selectRouteOption('BUS-02')">
-                <div class="route-card-badge">02</div>
-                <div class="route-card-info">
-                    <h4>BUS-02</h4>
-                    <p>Ganapavaram &rarr; DNR College of Eng.</p>
-                </div>
-                <div class="route-card-radio"></div>
-            </div>
-
-            <div class="route-card" id="card-BUS-03" onclick="window.selectRouteOption('BUS-03')">
-                <div class="route-card-badge">03</div>
-                <div class="route-card-info">
-                    <h4>BUS-03</h4>
-                    <p>Palakollu &rarr; DNR College of Eng.</p>
-                </div>
-                <div class="route-card-radio"></div>
-            </div>
+            <!-- Dynamic route cards injected here -->
         </div>
 
         <button class="action-btn start-btn" style="width: 100%; margin-bottom: 10px;" onclick="window.confirmRoleAndBus()">CONFIRM ROUTE & CONTINUE</button>
@@ -339,7 +313,7 @@ button.action-btn { border: none; padding: 14px 24px; border-radius: 12px; color
     </header>
 
     <div class="container">
-        <div class="card">
+        <div class="card" id="telemetryCard">
             <h2>Bus Telemetry</h2>
             <div class="info-grid">
                 <div class="info-card">
@@ -370,22 +344,39 @@ button.action-btn { border: none; padding: 14px 24px; border-radius: 12px; color
             </div>
         </div>
 
-        <div class="card">
+        <!-- Map Card (Hidden when Management selects ALL BUSES) -->
+        <div class="card" id="mapCard">
             <h2>Live GPS Navigation</h2>
             <div id="map"></div>
         </div>
 
-        <div class="card" id="driverControlsSection">
+        <!-- Management Settings & Announcement Portal (Replaces map when ALL BUSES is selected by Management) -->
+        <div class="card" id="managementHubSection" style="display: none;">
+            <h2>⚙️ Management Settings & Announcement Portal</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">Configure campus transit fleet, register new buses, and broadcast announcements.</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                <div style="background: rgba(255,255,255,0.7); padding: 20px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.06);">
+                    <h3 style="margin-top:0; font-size:16px; color:#1e3a8a;">🚌 Setup New Bus Route</h3>
+                    <input type="text" id="newBusId" class="form-input" placeholder="Bus ID (e.g. BUS-04)">
+                    <input type="text" id="newBusRoute" class="form-input" placeholder="Route (e.g. Amalapuram &rarr; DNR College)">
+                    <button class="action-btn start-btn" style="width: 100%;" onclick="window.addNewBusRoute()">REGISTER NEW BUS</button>
+                </div>
+
+                <div style="background: rgba(255,255,255,0.7); padding: 20px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.06);">
+                    <h3 style="margin-top:0; font-size:16px; color:#1e3a8a;">📢 Broadcast Announcement</h3>
+                    <textarea id="mgmtAnnouncementMsg" class="form-input" rows="3" placeholder="Enter global announcement message..."></textarea>
+                    <button class="action-btn start-btn" style="width: 100%;" onclick="window.sendGlobalBroadcast()">BROADCAST TO FLEET</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="driverControlsSection" style="display: none;">
             <h2>Driver GPS Controller</h2>
             <div class="controls">
                 <button class="action-btn start-btn" onclick="window.startTracking()">START GPS BROADCAST</button>
                 <button class="action-btn stop-btn" onclick="window.stopTracking()">STOP GPS BROADCAST</button>
             </div>
-        </div>
-
-        <div class="card" id="managementSection" style="display: none;">
-            <h2>Management Administrative Panel</h2>
-            <button class="action-btn start-btn" onclick="window.sendBroadcast()">Broadcast Announcement</button>
         </div>
 
         <div class="card">
@@ -426,8 +417,83 @@ let map = null;
 let watchId = null;
 let busMarker = null;
 let currentDbRef = null;
+let previousEmergencyState = false;
+let previousAnnouncementsCount = -1;
+
+// Audio management variables for instant stop capability
+let activeAudioCtx = null;
+let activeOscillators = [];
 
 const dnrCollege = [16.5358, 81.5186];
+
+function playSoundAlert(type = 'notification') {
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        
+        stopSoundAlert(); // Clear any previously running sounds first
+        activeAudioCtx = new AudioContext();
+
+        if (type === 'emergency') {
+            const totalDuration = 30;
+            const cycleDuration = 1.2; 
+            const cycles = Math.ceil(totalDuration / cycleDuration);
+
+            for (let i = 0; i < cycles; i++) {
+                const startTime = activeAudioCtx.currentTime + (i * cycleDuration);
+
+                const osc = activeAudioCtx.createOscillator();
+                const gain = activeAudioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(activeAudioCtx.destination);
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(440, startTime);
+                osc.frequency.linearRampToValueAtTime(880, startTime + (cycleDuration / 2));
+                osc.frequency.linearRampToValueAtTime(440, startTime + cycleDuration);
+
+                gain.gain.setValueAtTime(0.3, startTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, startTime + cycleDuration);
+
+                osc.start(startTime);
+                osc.stop(startTime + cycleDuration);
+                
+                activeOscillators.push(osc);
+            }
+        } else {
+            const osc = activeAudioCtx.createOscillator();
+            const gain = activeAudioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(activeAudioCtx.destination);
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(587.33, activeAudioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(880, activeAudioCtx.currentTime + 0.2);
+            gain.gain.setValueAtTime(0.2, activeAudioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, activeAudioCtx.currentTime + 0.2);
+            osc.start();
+            osc.stop(activeAudioCtx.currentTime + 0.2);
+            
+            activeOscillators.push(osc);
+        }
+    } catch(e) {
+        console.log("Audio play blocked.");
+    }
+}
+
+function stopSoundAlert() {
+    try {
+        activeOscillators.forEach(osc => {
+            try { osc.stop(); } catch(err) {}
+        });
+        activeOscillators = [];
+
+        if (activeAudioCtx && activeAudioCtx.state !== 'closed') {
+            activeAudioCtx.close();
+            activeAudioCtx = null;
+        }
+    } catch(e) {}
+}
 
 window.addEventListener('DOMContentLoaded', () => {
     const savedRole = localStorage.getItem("saved_role");
@@ -442,35 +508,10 @@ window.addEventListener('DOMContentLoaded', () => {
         document.getElementById("currentRoleBadge").innerText = window.userRole;
 
         document.getElementById("driverControlsSection").style.display = (window.userRole === "Driver") ? "block" : "none";
-        document.getElementById("managementSection").style.display = (window.userRole === "Management") ? "block" : "none";
 
-        initMap();
+        initAppView();
     }
 });
-
-function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371;
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-              Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R * c;
-}
-
-function getCalculatedETA(lat, lng, speed) {
-    const distanceKm = calculateDistance(lat, lng, dnrCollege[0], dnrCollege[1]);
-    if (distanceKm < 0.2) return "Arrived";
-
-    const effectiveSpeed = (speed && speed > 5) ? parseFloat(speed) : 30; 
-    const timeInHours = distanceKm / effectiveSpeed;
-    const minutesLeft = Math.round(timeInHours * 60);
-
-    if (minutesLeft < 1) return "< 1 min";
-    if (minutesLeft > 120) return `${(minutesLeft / 60).toFixed(1)} hrs`;
-    return `${minutesLeft} mins (${distanceKm.toFixed(1)} km)`;
-}
 
 window.openBusModal = function(role) {
     window.userRole = role;
@@ -483,16 +524,51 @@ window.openBusModal = function(role) {
         }
     }
 
-    const allOptionCard = document.getElementById("card-ALL");
-    if (role === "Management") {
-        allOptionCard.style.display = "flex";
-    } else {
-        allOptionCard.style.display = "none";
-    }
-
     document.getElementById("modalTitle").innerText = `${role} Portal: Select Route`;
+    loadRoutesIntoModal();
     document.getElementById("busSelectModal").style.display = "flex";
 };
+
+function loadRoutesIntoModal() {
+    const container = document.getElementById("routeCardsContainer");
+    container.innerHTML = "";
+
+    if (window.userRole === "Management") {
+        container.innerHTML += `
+            <div class="route-card" id="card-ALL" onclick="window.selectRouteOption('ALL')">
+                <div class="route-card-badge">🌐</div>
+                <div class="route-card-info">
+                    <h4>ALL BUSES</h4>
+                    <p>Settings & Management Portal View</p>
+                </div>
+                <div class="route-card-radio"></div>
+            </div>
+        `;
+    }
+
+    db.ref("routes").once("value", (snapshot) => {
+        const routes = snapshot.val() || {
+            "BUS-01": { name: "Bhyravapatnam -> DNR College of Eng." },
+            "BUS-02": { name: "Ganapavaram -> DNR College of Eng." },
+            "BUS-03": { name: "Palakollu -> DNR College of Eng." }
+        };
+
+        Object.keys(routes).forEach((busKey) => {
+            const routeData = routes[busKey];
+            const isSelected = (window.selectedBus === busKey) ? "selected" : "";
+            container.innerHTML += `
+                <div class="route-card ${isSelected}" id="card-${busKey}" onclick="window.selectRouteOption('${busKey}')">
+                    <div class="route-card-badge">${busKey.replace("BUS-", "")}</div>
+                    <div class="route-card-info">
+                        <h4>${busKey}</h4>
+                        <p>${routeData.name}</p>
+                    </div>
+                    <div class="route-card-radio"></div>
+                </div>
+            `;
+        });
+    });
+}
 
 window.closeBusModalOnly = function() {
     document.getElementById("busSelectModal").style.display = "none";
@@ -519,22 +595,15 @@ window.confirmRoleAndBus = function() {
     document.getElementById("currentRoleBadge").innerText = window.userRole;
 
     document.getElementById("driverControlsSection").style.display = (window.userRole === "Driver") ? "block" : "none";
-    document.getElementById("managementSection").style.display = (window.userRole === "Management") ? "block" : "none";
 
-    if (!map) {
-        initMap();
-    } else {
-        listenToFirebase();
-        listenToAnnouncements();
-    }
-
-    setTimeout(() => { if (map) map.invalidateSize(); }, 200);
+    initAppView();
 };
 
 window.returnToRoleSelection = function() {
     window.stopTracking();
     clearBusMarker();
     resetUI();
+    stopSoundAlert();
 
     localStorage.removeItem("saved_role");
     localStorage.removeItem("saved_bus");
@@ -547,6 +616,24 @@ window.returnToRoleSelection = function() {
     document.getElementById("appInterface").style.display = "none";
     document.getElementById("roleSelectionScreen").style.display = "flex";
 };
+
+function initAppView() {
+    if (window.userRole === "Management" && window.selectedBus === "ALL") {
+        document.getElementById("mapCard").style.display = "none";
+        document.getElementById("managementHubSection").style.display = "block";
+        document.getElementById("telemetryCard").style.display = "none";
+    } else {
+        document.getElementById("mapCard").style.display = "block";
+        document.getElementById("managementHubSection").style.display = "none";
+        document.getElementById("telemetryCard").style.display = "block";
+        if (!map) {
+            initMap();
+        } else {
+            listenToFirebase();
+        }
+    }
+    listenToAnnouncements();
+}
 
 function initMap() {
     if (map) {
@@ -563,7 +650,6 @@ function initMap() {
     L.marker(dnrCollege).addTo(map).bindPopup("<b>DNR College of Eng. & Tech.</b><br>Destination Point");
 
     listenToFirebase();
-    listenToAnnouncements();
 }
 
 function clearBusMarker() {
@@ -606,6 +692,10 @@ function listenToFirebase() {
             }
 
             if (activeEmergencyBus) {
+                if (!previousEmergencyState) {
+                    playSoundAlert('emergency');
+                    previousEmergencyState = true;
+                }
                 emergencyCard.className = "card emergency-card-active";
                 emergencyControls.innerHTML = `
                     <h3 style="color: #dc2626; margin-top:0;">⚠️ EMERGENCY ALERT ACTIVE ON ${activeEmergencyBus} ⚠️</h3>
@@ -613,6 +703,10 @@ function listenToFirebase() {
                     <button class="action-btn stop-btn" onclick="window.clearEmergency('${activeEmergencyBus}')">RESOLVE EMERGENCY FOR ${activeEmergencyBus}</button>
                 `;
             } else {
+                if (previousEmergencyState) {
+                    stopSoundAlert();
+                }
+                previousEmergencyState = false;
                 emergencyCard.className = "card";
                 emergencyControls.innerHTML = `
                     <h2>Emergency Status</h2>
@@ -627,6 +721,10 @@ function listenToFirebase() {
             clearBusMarker();
 
             if (data && data.emergency) {
+                if (!previousEmergencyState) {
+                    playSoundAlert('emergency');
+                    previousEmergencyState = true;
+                }
                 emergencyCard.className = "card emergency-card-active";
                 emergencyControls.innerHTML = `
                     <h3 style="color: #dc2626; margin-top:0;">⚠️ EMERGENCY ALERT ACTIVE (${window.selectedBus}) ⚠️</h3>
@@ -634,6 +732,10 @@ function listenToFirebase() {
                     ${window.userRole !== 'Student' ? `<button class="action-btn stop-btn" onclick="window.clearEmergency('${window.selectedBus}')">RESOLVE EMERGENCY</button>` : ''}
                 `;
             } else {
+                if (previousEmergencyState) {
+                    stopSoundAlert();
+                }
+                previousEmergencyState = false;
                 emergencyCard.className = "card";
                 emergencyControls.innerHTML = `
                     <h2>Emergency Alert</h2>
@@ -669,6 +771,11 @@ function listenToAnnouncements() {
         if (data) {
             let count = 0;
             const keys = Object.keys(data);
+            
+            if (previousAnnouncementsCount !== -1 && keys.length > previousAnnouncementsCount) {
+                playSoundAlert('notification');
+            }
+            previousAnnouncementsCount = keys.length;
 
             keys.reverse().forEach((key) => {
                 const item = data[key];
@@ -694,10 +801,47 @@ function listenToAnnouncements() {
                 list.innerHTML = `<div class="notification">No active announcements for ${window.selectedBus}.</div>`;
             }
         } else {
+            previousAnnouncementsCount = 0;
             list.innerHTML = `<div class="notification">Bus service active. Check live map for real-time tracking.</div>`;
         }
     });
 }
+
+window.addNewBusRoute = function() {
+    const busId = document.getElementById("newBusId").value.trim().toUpperCase();
+    const routeName = document.getElementById("newBusRoute").value.trim();
+
+    if (!busId || !routeName) {
+        alert("Please enter both a Bus ID and a Route description.");
+        return;
+    }
+
+    db.ref("routes/" + busId).set({ name: routeName }).then(() => {
+        db.ref("buses/" + busId).set({ status: "OFFLINE", speed: 0 }).then(() => {
+            alert(`Bus ${busId} successfully registered!`);
+            document.getElementById("newBusId").value = "";
+            document.getElementById("newBusRoute").value = "";
+        });
+    });
+};
+
+window.sendGlobalBroadcast = function() {
+    const msg = document.getElementById("mgmtAnnouncementMsg").value.trim();
+    if (!msg) {
+        alert("Please enter an announcement message.");
+        return;
+    }
+
+    db.ref("announcements").push({
+        message: msg,
+        sender: "Management",
+        targetBus: "ALL",
+        timestamp: Date.now()
+    }).then(() => {
+        alert("Global announcement broadcasted successfully!");
+        document.getElementById("mgmtAnnouncementMsg").value = "";
+    });
+};
 
 window.startTracking = function() {
     if (window.selectedBus === "ALL") {
@@ -781,18 +925,7 @@ window.clearEmergency = function(busToClear) {
         emergency: false,
         emergencyMessage: null
     });
-};
-
-window.sendBroadcast = function() {
-    const msg = prompt(`Enter announcement message for targeted bus (${window.selectedBus}):`);
-    if (msg) {
-        db.ref("announcements").push({
-            message: msg,
-            sender: "Management",
-            targetBus: window.selectedBus,
-            timestamp: Date.now()
-        });
-    }
+    stopSoundAlert();
 };
 
 window.deleteAnnouncement = function(key) {
@@ -800,6 +933,30 @@ window.deleteAnnouncement = function(key) {
         db.ref("announcements/" + key).remove();
     }
 };
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
+
+function getCalculatedETA(lat, lng, speed) {
+    const distanceKm = calculateDistance(lat, lng, dnrCollege[0], dnrCollege[1]);
+    if (distanceKm < 0.2) return "Arrived";
+
+    const effectiveSpeed = (speed && speed > 5) ? parseFloat(speed) : 30; 
+    const timeInHours = distanceKm / effectiveSpeed;
+    const minutesLeft = Math.round(timeInHours * 60);
+
+    if (minutesLeft < 1) return "< 1 min";
+    if (minutesLeft > 120) return `${(minutesLeft / 60).toFixed(1)} hrs`;
+    return `${minutesLeft} mins (${distanceKm.toFixed(1)} km)`;
+}
 </script>
 
 </body>
